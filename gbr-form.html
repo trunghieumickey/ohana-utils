@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBR Form Maker</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="container">
+            <label for="guildname">Guild Name:</label>
+            <input type="text" id="guildname">
+        </div>
+        <div class="container">
+            <label for="datetime">Date/Time:</label>
+            <input type="datetime-local" id="datetime">
+        </div>
+        <div class="container">
+            <label for="invtime">Invite Time:</label>
+            <input type="time" id="invtime">
+        </div>
+        <div class="container">
+            <label for="server">Server:</label>
+            <select id="server">
+                <option value="O1">O1</option>
+                <option value="R1">R1</option>
+                <option value="R2">R2</option>
+                <option value="V1">V1</option>
+                <option value="V2">V2</option>
+                <option value="H1">H1</option>
+                <option value="H2">H2</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="G1">G1</option>
+                <option value="G2">G2</option>
+            </select>
+        </div>
+        <div class="container">
+            <label for="rotation">Rotation:</label>
+            <select id="rotation">
+                <option value="Puturum → Ferrid → Mudster → CTG Khan">Puturum → Ferrid → Mudster → CTG Khan</option>
+                <option value="Mudster → Ferrid → Puturum → CTG Khan">Mudster → Ferrid → Puturum → CTG Khan</option>
+                <option value="Khan → CTG Puturum → Ferrid → Mudster">Khan → CTG Puturum → Ferrid → Mudster</option>
+                <option value="Khan → CTG Mudster → Ferrid → Puturum">Khan → CTG Mudster → Ferrid → Puturum</option>
+                <option value="Puturum → Ferrid → Mudster">Puturum → Ferrid → Mudster</option>
+                <option value="Mudster → Ferrid → Puturum">Mudster → Ferrid → Puturum</option>
+            </select>
+        </div>
+        <div class="container">
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact">
+        </div>
+        <div class="container">
+            <label for="passcode">Passcode:</label>
+            <input type="text" id="passcode">
+        </div>
+        <div class="container">
+            <label for="slots">Slots:</label>
+            <input type="number" id="slots" min="1" max="100">
+        </div>
+        <div class="container">
+            <label for="infos">Additional Info:</label>
+            <input type="text" id="infos">
+        </div>
+        <div class="container">
+            <label for="banner">Discord Banner Link: (Show in browser > Copy link)</label>
+            <input type="text" id="banner">
+        </div>
+        <textarea id="output" readonly></textarea>
+        <div class="button-container">
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Set default values
+            setDefaultValues();
+
+            const inputs = document.querySelectorAll('#invtime, #datetime, #server, #rotation, #guildname, #contact, #passcode, #infos, #banner, #slots');
+            inputs.forEach(input => {
+                input.addEventListener('change', compileAndShow);
+            });
+            compileAndShow(); // Populate details on page load
+        });
+
+        function setDefaultValues() {
+            // Create a new Date object for the current time
+            const now = new Date();
+            // Adjust to local timezone and format to YYYY-MM-DDTHH:MM
+            let year = now.getFullYear();
+            let month = ('0' + (now.getMonth() + 1)).slice(-2); // Months are 0-based
+            let day = ('0' + now.getDate()).slice(-2);
+            let hours = ('0' + now.getHours()).slice(-2);
+            let minutes = ('0' + now.getMinutes()).slice(-2);
+            const datetimeLocal = `${year}-${month}-${day}T${hours}:${minutes}`;
+            document.getElementById('datetime').value = datetimeLocal;
+
+            // Set default values for other inputs
+            document.getElementById('guildname').value = 'Ohana'; // Example default value
+            document.getElementById('server').value = 'O1'; // Example default value
+            document.getElementById('rotation').value = 'Puturum → Ferrid → Mudster → CTG Khan'; // Example default value
+            document.getElementById('contact').value = 'None'; // Example default value
+        }
+
+        function compileAndShow() {
+            const datetime = document.getElementById('datetime').value;
+            const invtime = document.getElementById('invtime').value;
+            const server = document.getElementById('server').value;
+            const rotation = document.getElementById('rotation').value;
+            const guildname = document.getElementById('guildname').value;
+            const contact = document.getElementById('contact').value;
+            const infos = document.getElementById('infos').value;
+            const passcode = document.getElementById('passcode').value;
+            const banner = document.getElementById('banner').value;
+            const slots = document.getElementById('slots').value;
+
+            // Convert datetime to Unix timestamp in UTC
+            const datetimeUTC = new Date(datetime).getTime() / 1000; // getTime() returns milliseconds
+            const invtimeUTC = invtime ? new Date(datetime.split('T')[0] + 'T' + invtime).getTime() / 1000 : null;
+
+            var details = `<@&1235505448178810881>`;
+            details += `\n# ${guildname}`
+            details += `\n- <t:${datetimeUTC}:F> @ ${server}`
+            details += `\n- ${rotation}`
+            details += `\n- Contact: ${contact}`
+
+            if (slots) {
+                details += `\n- Slots: ${slots}`;
+            }
+            if (infos) {
+                details += `\n- ${infos}`;
+            }
+            if (invtime){
+                details += `\n- Start invite at <t:${invtimeUTC}:t>`;
+            }
+            if (passcode) {
+                details += `\n- Password: "**${passcode}**"`;
+            }
+            if (banner) {
+                details += `\n- ${banner}`;
+            }
+            document.getElementById('output').value = details;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output');
+            outputText.select();
+            outputText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('Copied to clipboard');
+        }
+    </script>
+</body>
+
+</html>

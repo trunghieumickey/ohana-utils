@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            margin: unset;
+            padding: unset;
+            width: 400px;
+            height: 200px;
+        }
+
+        .box {
+            background-color: #242427;
+            width: 400px;
+            height: 200px;
+            padding: 20px;
+            display: flex;
+            align-items: start;
+            justify-content: space-around;
+            flex-direction: column;
+            color: white;
+            border: solid darkorange;
+            /* rounded border: ; */
+        }
+
+        .quest-details,
+        .rewards {
+            display: flex;
+            align-items: center;
+        }
+
+        .rewards img {
+            margin-left: 8px;
+        }
+
+
+        .common {
+            border: 1px solid white;
+            /* Added 'solid' for border style */
+        }
+
+        .uncommon {
+            border: 1px solid green;
+            /* Added '1px solid' to specify width and style */
+        }
+
+        .rare {
+            border: 1px solid blue;
+            /* Added '1px solid' to specify width and style */
+        }
+
+        .epic {
+            border: 1px solid orange;
+            /* Added '1px solid' to specify width and style */
+        }
+
+        .legend {
+            border: 1px solid orangered;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="quest-details">
+            <div>
+                <h4 style="color: orange;">In progress</h3>
+                    <h3>Valencia Subjugation</h3>
+                    <div style="color: gray;">Velia-1</div>
+                    <div style="color: yellow;">Defeat any monster x2000.</div>
+            </div>
+        </div>
+        <div class="rewards">
+            <img class="common" src="https://cdn.bdolytics.com/img/new_icon/03_etc/03_quest_item/00065524.webp">
+            <img class="common"
+                src="https://cdn.bdolytics.com/img/new_icon/06_pc_equipitem/00_common/00_etc/guild_exp_up.webp">
+            <img class="legend" src="https://cdn.bdolytics.com/img/new_icon/03_etc/00016400.webp">
+            <img class="epic" src="https://cdn.bdolytics.com/img/new_icon/03_etc/03_quest_item/00040452.webp">
+            <img class="epic" src="https://cdn.bdolytics.com/img/new_icon/03_etc/03_quest_item/00040454.webp">
+            <img class="epic" src="https://cdn.bdolytics.com/img/new_icon/03_etc/03_quest_item/00040455.webp">
+        </div>
+    </div>
+</body>
+
+</html>
