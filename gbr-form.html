@@ -14,29 +14,37 @@
             <label for="guildname">Guild Name:</label>
             <input type="text" id="guildname">
         </div>
-        <div class="container">
-            <label for="datetime">Date/Time:</label>
-            <input type="datetime-local" id="datetime">
+        <div class="container" style="display: flex; align-items: center;"> 
+            <div style="flex: 1; margin-right: 10px;"> 
+                <label for="datetime">Date/Time:</label>
+                <input type="datetime-local" id="datetime">
+            </div>
+            <div style="flex: 1;">
+                <label for="invtime">Invite Time:</label>
+                <input type="time" id="invtime">
+            </div>
         </div>
-        <div class="container">
-            <label for="invtime">Invite Time:</label>
-            <input type="time" id="invtime">
-        </div>
-        <div class="container">
-            <label for="server">Server:</label>
-            <select id="server">
-                <option value="O1">O1</option>
-                <option value="R1">R1</option>
-                <option value="R2">R2</option>
-                <option value="V1">V1</option>
-                <option value="V2">V2</option>
-                <option value="H1">H1</option>
-                <option value="H2">H2</option>
-                <option value="A1">A1</option>
-                <option value="A2">A2</option>
-                <option value="G1">G1</option>
-                <option value="G2">G2</option>
-            </select>
+        <div class="container" style="display: flex; align-items: center;"> 
+            <div style="flex: 1; margin-right: 10px;"> 
+                <label for="server">Server:</label>
+                <select id="server">
+                    <option value="O1">O1</option>
+                    <option value="R1">R1</option>
+                    <option value="R2">R2</option>
+                    <option value="V1">V1</option>
+                    <option value="V2">V2</option>
+                    <option value="H1">H1</option>
+                    <option value="H2">H2</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="G1">G1</option>
+                    <option value="G2">G2</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label for="slots">Slots:</label>
+                <input type="number" id="slots" min="1" max="100">
+            </div>
         </div>
         <div class="container">
             <label for="rotation">Rotation:</label>
@@ -54,16 +62,8 @@
             <input type="text" id="passcode">
         </div>
         <div class="container">
-            <label for="slots">Slots:</label>
-            <input type="number" id="slots" min="1" max="100">
-        </div>
-        <div class="container">
             <label for="infos">Additional Info:</label>
             <input type="text" id="infos">
-        </div>
-        <div class="container">
-            <label for="banner">Discord Banner Link: (Show in browser > Copy link)</label>
-            <input type="text" id="banner">
         </div>
         <textarea id="output" readonly></textarea>
         <div class="button-container">
@@ -75,7 +75,7 @@
             // Set default values
             setDefaultValues();
 
-            const inputs = document.querySelectorAll('#invtime, #datetime, #server, #rotation, #guildname, #contact, #passcode, #infos, #banner, #slots');
+            const inputs = document.querySelectorAll('#invtime, #datetime, #server, #rotation, #guildname, #contact, #passcode, #infos, #slots');
             inputs.forEach(input => {
                 input.addEventListener('change', compileAndShow);
             });
@@ -110,7 +110,6 @@
             const contact = document.getElementById('contact').value;
             const infos = document.getElementById('infos').value;
             const passcode = document.getElementById('passcode').value;
-            const banner = document.getElementById('banner').value;
             const slots = document.getElementById('slots').value;
 
             // Convert datetime to Unix timestamp in UTC
@@ -134,9 +133,6 @@
             }
             if (passcode) {
                 details += `\n- Password: "**${passcode}**"`;
-            }
-            if (banner) {
-                details += `\n- ${banner}`;
             }
             document.getElementById('output').value = details;
         }
