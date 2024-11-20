@@ -9,13 +9,13 @@
 </head>
 
 <body>
-    <div class="main-container">
+    <div class="main-container" id="main-container">
         <div class="container">
             <label for="guildname">Guild Name:</label>
-            <input type="text" id="guildname">
+            <input type="text" id="guildname" placeholder="Enter Guild Name...">
         </div>
-        <div class="container" style="display: flex; align-items: center;"> 
-            <div style="flex: 1; margin-right: 10px;"> 
+        <div class="container" style="display: flex; align-items: center;">
+            <div style="flex: 1; margin-right: 10px;">
                 <label for="server">Server:</label>
                 <select id="server">
                     <option value="O1">O1</option>
@@ -33,11 +33,11 @@
             </div>
             <div style="flex: 1;">
                 <label for="slots">Slots:</label>
-                <input type="number" id="slots" min="1" max="100">
+                <input type="number" id="slots" min="1" max="100" placeholder="Enter number of slots...">
             </div>
         </div>
-        <div class="container" style="display: flex; align-items: center;"> 
-            <div style="flex: 1; margin-right: 10px;"> 
+        <div class="container" style="display: flex; align-items: center;">
+            <div style="flex: 1; margin-right: 10px;">
                 <label for="datetime">Date/Time:</label>
                 <input type="datetime-local" id="datetime">
             </div>
@@ -49,6 +49,12 @@
         <div class="container">
             <label for="rotation">Rotation:</label>
             <select id="rotation">
+                <option value="Puturum → Ferrid → Mudster → CTG Khan">Puturum → Ferrid → Mudster → CTG Khan</option>
+                <option value="Mudster → Ferrid → Puturum → CTG Khan">Mudster → Ferrid → Puturum → CTG Khan</option>
+                <option value="Khan → CTG Puturum → Ferrid → Mudster">Khan → CTG Puturum → Ferrid → Mudster</option>
+                <option value="Khan → CTG Mudster → Ferrid → Puturum">Khan → CTG Mudster → Ferrid → Puturum</option>
+                <option value="Khan → Mudster → Ferrid → CTG Puturum">Khan → Mudster → Ferrid → CTG Puturum</option>
+                <option value="Puturum → CTG Ferrid → Mudster → Khan">Puturum → CTG Ferrid → Mudster → Khan</option>
                 <option value="Puturum → Ferrid → Mudster → Khan">Puturum → Ferrid → Mudster → Khan</option>
                 <option value="Mudster → Ferrid → Puturum → Khan">Mudster → Ferrid → Puturum → Khan</option>
                 <option value="Khan → Puturum → Ferrid → Mudster">Khan → Puturum → Ferrid → Mudster</option>
@@ -57,27 +63,34 @@
         </div>
         <div class="container">
             <label for="contact">Contact:</label>
-            <input type="text" id="contact">
+            <input type="text" id="contact" placeholder="Enter Contact Familys Seperated By Commas..."">
         </div>
         <div class="container">
             <label for="passcode">Passcode:</label>
-            <input type="text" id="passcode">
+            <input type="text" id="passcode" placeholder="Use '@' to replace Guild Name">
         </div>
-        <div class="container">
-            <label for="infos">Additional Info:</label>
-            <input type="text" id="infos">
+        <div id="infos-container">
+            <!-- <div class="container">
+                <label for="infos-0">Additional Info:</label>
+                <input type="text" id="infos-0">
+            </div> -->
+
         </div>
         <textarea id="output" readonly></textarea>
-        <div class="button-container">
-            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        <div class="button-container" style="display: flex; align-items: center;">
+            <button onclick="copyToClipboard()">📋Copy to Clipboard</button>
+            <button onclick="addInfoField()">➕ Add Info</button>
+            <button onclick="removeInfoField()">➖ Remove Info</button>
         </div>
     </div>
     <script>
+        let infoCount = 1;
+
         document.addEventListener('DOMContentLoaded', (event) => {
             // Set default values
             setDefaultValues();
 
-            const inputs = document.querySelectorAll('#invtime, #datetime, #server, #rotation, #guildname, #contact, #passcode, #infos, #slots');
+            const inputs = document.querySelectorAll('#main-container');
             inputs.forEach(input => {
                 input.addEventListener('change', compileAndShow);
             });
@@ -99,18 +112,39 @@
             // Set default values for other inputs
             document.getElementById('guildname').value = 'Ohana'; // Example default value
             document.getElementById('server').value = 'O1'; // Example default value
-            document.getElementById('rotation').value = 'Puturum → Ferrid → Mudster → Khan'; // Example default value
-            document.getElementById('contact').value = 'None'; // Example default value
+            document.getElementById('rotation').value = 'Puturum → Ferrid → Mudster → CTG Khan'; // Example default value
+        }
+
+        function addInfoField() {
+            if (infoCount < 6) {
+                const container = document.getElementById('infos-container');
+                const newDiv = document.createElement('div');
+                newDiv.className = 'container';
+                newDiv.innerHTML = `<label for="infos-${infoCount}">Additional Info ${infoCount}:</label><input type="text" id="infos-${infoCount}" placeholder="Enter more details...">`;
+                container.appendChild(newDiv);
+                infoCount++;
+                compileAndShow(); // Update output on adding a field
+            }
+        }
+
+        function removeInfoField() {
+            if (infoCount > 1) {
+                infoCount--;
+                const container = document.getElementById('infos-container');
+                container.removeChild(container.lastChild);
+                compileAndShow(); // Update output on removing a field
+            }
         }
 
         function compileAndShow() {
+            const addButton = document.querySelector('button[onclick="addInfoField()"]');
+            const removeButton = document.querySelector('button[onclick="removeInfoField()"]');
             const datetime = document.getElementById('datetime').value;
             const invtime = document.getElementById('invtime').value;
             const server = document.getElementById('server').value;
             const rotation = document.getElementById('rotation').value;
             const guildname = document.getElementById('guildname').value;
             const contact = document.getElementById('contact').value;
-            const infos = document.getElementById('infos').value;
             const passcode = document.getElementById('passcode').value;
             const slots = document.getElementById('slots').value;
 
@@ -118,25 +152,31 @@
             const datetimeUTC = new Date(datetime).getTime() / 1000; // getTime() returns milliseconds
             const invtimeUTC = invtime ? new Date(datetime.split('T')[0] + 'T' + invtime).getTime() / 1000 : null;
 
-            var details = `<@&1235505448178810881>`;
+            var details = `@here`;
             details += `\n# ${guildname}`
             details += `\n- <t:${datetimeUTC}:F> @ ${server}`
             details += `\n- ${rotation}`
-            details += `\n- Contact: ${contact}`
-
+            if (contact) {
+                details += `\n- Contact: ${contact}`
+            }
             if (slots) {
                 details += `\n- Slots: ${slots}`;
             }
-            if (infos) {
-                details += `\n- ${infos}`;
-            }
-            if (invtime){
+            if (invtime) {
                 details += `\n- Start invite at <t:${invtimeUTC}:t>`;
             }
             if (passcode) {
-                details += `\n- Password: "**${passcode}**"`;
+                details += `\n- Password: "**${passcode.replace(/@/g, "[<Guild Name>](https://trunghieumickey.github.io/ohana-utils/gbr-form.html)")}**"`;
+            }
+            for (let i = 0; i < infoCount; i++) {
+                const infoValue = document.getElementById(`infos-${i}`);
+                if (infoValue && infoValue.value) {
+                    details += `\n- ${infoValue.value}`;
+                }
             }
             document.getElementById('output').value = details;
+            addButton.disabled = infoCount >= 6
+            removeButton.disabled = infoCount <= 1
         }
 
         function copyToClipboard() {
