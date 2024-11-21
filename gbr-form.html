@@ -67,7 +67,7 @@
         </div>
         <div class="container">
             <label for="passcode">Passcode:</label>
-            <input type="text" id="passcode" placeholder="Use '@' to replace Guild Name">
+            <input type="text" id="passcode" placeholder="Put Guild Name Between &lt; and &gt; Bracket">
         </div>
         <div id="infos-container">
             <!-- <div class="container">
@@ -166,7 +166,7 @@
                 details += `\n- Start invite at <t:${invtimeUTC}:t>`;
             }
             if (passcode) {
-                details += `\n- Password: "**${passcode.replace(/@/g, "[<Guild Name>](https://trunghieumickey.github.io/ohana-utils/gbr-form.html)")}**"`;
+                details += `\n- Password: "**${passcode.replace(/<([^>]+)>/g, "[<$1>](https://trunghieumickey.github.io/ohana-utils/gbr-form.html)")}**"`;
             }
             for (let i = 0; i < infoCount; i++) {
                 const infoValue = document.getElementById(`infos-${i}`);
