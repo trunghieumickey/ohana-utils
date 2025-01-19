@@ -1,8 +1,7 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Noto, sans-serif;
     margin: 20px;
     padding: 0 10px;
-    /* Add padding to prevent content from touching the screen edges */
 }
 
 .container {
@@ -21,6 +20,34 @@ select {
     /* Includes padding and border in the element's total width and height */
 }
 
+.main-container {
+    max-width: 800px;
+    /* Adjust this value based on your design needs */
+    margin: 0 auto;
+    /* Centers the container */
+    padding: 20px;
+    /* Adds some padding inside the container */
+}
+
+textarea {
+    height: 200px;
+    resize: vertical;
+
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    /* Horizontally centers the button */
+    align-items: center;
+    /* Vertically centers the button, if needed */
+    /* Add any additional styling for the container here */
+}
+
+button {
+    margin: 2pt;
+}
+/* Existing styles */
 @media (max-width: 768px) {
 
     /* Adjust styles for smaller screens */
@@ -42,33 +69,9 @@ select {
     }
 }
 
-.main-container {
-    max-width: 800px;
-    /* Adjust this value based on your design needs */
-    margin: 0 auto;
-    /* Centers the container */
-    padding: 20px;
-    /* Adds some padding inside the container */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #000;
+        filter: hue-rotate(180deg) invert(1);
+    }
 }
-
-textarea {
-    height: 200px;
-    resize: vertical;
-
-}
-
-
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    /* Horizontally centers the button */
-    align-items: center;
-    /* Vertically centers the button, if needed */
-    /* Add any additional styling for the container here */
-}
-
-button {
-    margin: 2pt;
-}
-/* Existing styles */
