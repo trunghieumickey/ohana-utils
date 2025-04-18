@@ -68,19 +68,26 @@ function compileAndShow() {
 
     var details = `@here`;
     details += `\n# ${guildname}`
+    details += "\n### `1️⃣ Run Info`";
     details += `\n- <t:${datetimeUTC}:F> @ ${server}`
     details += `\n- ${rotation}`
-    if (contact) {
-        details += `\n- Contact: ${contact.match(/[\p{L}\p{N}]+/gu).join(', ')}`
+    if (invtime||contact||passcode||slots) {
+        details += "\n### `📞 Contact`";
+        if (invtime) {
+            details += `\n- Start invite at <t:${invtimeUTC}:t>`;
+        }
+        if (contact) {
+            details += `\n- Contact: ${contact.match(/[\p{L}\p{N}]+/gu).join(', ')}`
+        }
+        if (passcode) {
+            details += `\n- Password: "**${passcode.replace(/<([^>]+)>/g, "[$1](https://trunghieumickey.github.io/ohana-utils/gbr-form.html)")}**"`;
+        }
+        if (slots) {
+            details += `\n- Slots: ${slots}`;
+        }
     }
-    if (slots) {
-        details += `\n- Slots: ${slots}`;
-    }
-    if (invtime) {
-        details += `\n- Start invite at <t:${invtimeUTC}:t>`;
-    }
-    if (passcode) {
-        details += `\n- Password: "**${passcode.replace(/<([^>]+)>/g, "[$1](https://trunghieumickey.github.io/ohana-utils/gbr-form.html)")}**"`;
+    if (infoCount() > 1) {
+        details += "\n### `📝 Notes`";
     }
     for (let i = 0; i < infoCount(); i++) {
         const infoValue = document.getElementById(`infos-${i}`);
