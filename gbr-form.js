@@ -16,19 +16,22 @@ function infoCount(){
 function setDefaultValues() {
     // Create a new Date object for the current time
     const now = new Date();
-    // Adjust to local timezone and format to YYYY-MM-DDTHH:MM
-    let year = now.getFullYear();
-    let month = ('0' + (now.getMonth() + 1)).slice(-2); // Months are 0-based
-    let day = ('0' + now.getDate()).slice(-2);
-    let hours = ('0' + now.getHours()).slice(-2);
-    let minutes = ('0' + now.getMinutes()).slice(-2);
+
+    // Use padStart for cleaner zero-padding
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = '00'; // Set minutes to 00
+
+    // Construct the datetime-local string using template literals
     const datetimeLocal = `${year}-${month}-${day}T${hours}:${minutes}`;
     document.getElementById('datetime').value = datetimeLocal;
 
     // Set default values for other inputs
     document.getElementById('guildname').value = 'Ohana'; // Example default value
     document.getElementById('server').value = 'O1'; // Example default value
-    document.getElementById('rotation').value = 'Puturum → Ferrid → Mudster → CTG Khan'; // Example default value
+    document.getElementById('rotation').value = 'Khan → Mudster → Ferrid → CTG Puturum'; // Example default value
 }
 
 function addInfoField() {
@@ -101,9 +104,7 @@ function compileAndShow() {
 }
 
 function copyToClipboard() {
-    const outputText = document.getElementById('output');
-    outputText.select();
-    outputText.setSelectionRange(0, 99999); // For mobile devices
-    document.execCommand('copy');
-    alert('Copied to clipboard');
+    navigator.clipboard.writeText(document.getElementById('output').value).then(() => {
+        alert('Copied to clipboard');
+    });
 }
